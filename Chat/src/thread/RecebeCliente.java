@@ -29,8 +29,8 @@ public class RecebeCliente implements Runnable {
 	@Override
 	public void run() {
 		Mensagem mensagem;
-		while (true) {
-			try {
+		try {
+			while (!Thread.interrupted()) {
 				mensagem = (Mensagem) input.readObject();
 				switch (mensagem.getAcao()) {
 				case entrar:
@@ -41,16 +41,22 @@ public class RecebeCliente implements Runnable {
 						this.chat.sair(usuario);
 						usuario = null;
 						break;
-					} 
-					else
-						this.chat.enviar("Chat:> É necessário entrar no chat.", this.output);
+					} else
+						this.chat.enviar("Chat:> É necessário entrar no chat.",
+								this.output);
 					break;
 				default:
 					break;
 				}
-			} catch (ClassNotFoundException | IOException e) {
-				e.printStackTrace();
 			}
+		} catch (ClassNotFoundException | IOException e) {
+			try {
+				if (usuario != null)
+					chat.sair(usuario);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
 		}
 	}
 }

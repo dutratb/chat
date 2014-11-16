@@ -33,11 +33,11 @@ public class Cliente {
 		}
 	}
 
-	public void run() {
+	public void run() throws IOException {
 		BufferedReader teclado = new BufferedReader(new InputStreamReader(
 				System.in));
-		String entrada = null;
-		while (true) {
+		String entrada = "";
+		while (!entrada.equals(Acao.fechar.toString())) {
 			try {
 				entrada = teclado.readLine();
 				if (entrada.contains(Acao.entrar.toString())) {
@@ -57,6 +57,7 @@ public class Cliente {
 				e.printStackTrace();
 			}
 		}
+		this.serverSocket.close();
 	}
 
 	private void acoes(Mensagem mensagem) throws IOException {

@@ -14,7 +14,7 @@ public class RecebeMensagem implements Runnable {
 	public void run() {
 		String mensagem;
 		try {
-			while (true) {
+			while (!Thread.interrupted()) {
 				mensagem = (String) input.readUTF();
 				System.out.println(mensagem);
 			}
