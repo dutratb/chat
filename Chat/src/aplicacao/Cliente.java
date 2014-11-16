@@ -49,7 +49,9 @@ public class Cliente {
 					}
 					entrar(new Mensagem(Acao.entrar, entrada.replace(
 							Acao.entrar.toString(), "").trim()));
-				} else if (entrada.equals(Acao.listar.toString().trim()))
+				} else if (entrada.contains(Acao.enviar.toString())) 
+					acoes(new Mensagem(Acao.enviar, entrada.replace(Acao.enviar.toString(), "").trim()));
+				else if (entrada.equals(Acao.listar.toString().trim()))
 					listar();
 				else if (entrada.equals(Acao.sair.toString())) {
 					acoes(new Mensagem(Acao.sair, entrada.replace(

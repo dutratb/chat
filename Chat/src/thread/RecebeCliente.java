@@ -36,6 +36,14 @@ public class RecebeCliente implements Runnable {
 				case entrar:
 					this.usuario = this.chat.entrar(mensagem, this.output);
 					break;
+				case enviar:
+					if (this.usuario != null) {
+						this.chat.enviarTodos(mensagem.getTexto());
+						break;
+					}
+					else
+						chat.enviar("Chat:> É necessario entrar no chat!", output);
+					break;
 				case listar:
 					if (this.usuario != null) {
 						this.chat.listar(this.output);

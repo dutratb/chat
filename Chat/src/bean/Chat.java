@@ -28,7 +28,7 @@ public class Chat {
 		return usuario;
 	}
 
-	private void enviarTodos(String texto) throws IOException {
+	public void enviarTodos(String texto) throws IOException {
 		for (Map.Entry<String, DataOutputStream> map : this.clientes.entrySet()) {
 			map.getValue().writeUTF(texto);
 		}
@@ -39,7 +39,7 @@ public class Chat {
 	}
 
 	public void sair(Usuario usuario) throws IOException {
-		enviarTodos("Chat:>" + usuario.getNome() + " saiu!");
+		enviarTodos("Chat:> " + usuario.getNome() + " saiu!");
 		this.clientes.remove(usuario.getNome());
 	}
 
@@ -49,7 +49,6 @@ public class Chat {
 			lista = lista + " [" + map.getKey() + "] ";
 		}
 		enviar(lista, output);
-		
 	}
 	
 }
