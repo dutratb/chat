@@ -1,15 +1,20 @@
 package aplicacao;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 import thread.RecebeCliente;
 
 public class Servidor {
 	private static final int PORT = 12345;
+	private Map<String, DataOutputStream> clientes;
 	
 	public Servidor() {
+		this.clientes = new HashMap<String, DataOutputStream>();
 		System.out.println("Inicializando o servidor...");
 		try {
 			ServerSocket servidor = new ServerSocket(PORT);
@@ -19,7 +24,7 @@ public class Servidor {
 				Socket socketCliente = servidor.accept();
 				System.out.println("Nova conexão com o cliente "
 						+ socketCliente.getInetAddress().getHostAddress());
-				new Thread(new RecebeCliente(socketCliente)).start();
+				new Thread(new RecebeCliente(socketCliente, clientes)).start();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -29,5 +34,4 @@ public class Servidor {
 	public static void main(String[] args) {
 		new Servidor();
 	}
-
 }
