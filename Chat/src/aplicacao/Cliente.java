@@ -47,12 +47,21 @@ public class Cliente {
 						System.out.print("Chat:> Erro: Usuário em branco");
 						entrada = teclado.readLine();
 					}
-					entrar(new Mensagem(Acao.entrar, entrada.replace(Acao.entrar
-							.toString(), "").trim()));
+					entrar(new Mensagem(Acao.entrar, entrada.replace(
+							Acao.entrar.toString(), "").trim()));
+				} else if (entrada.equals(Acao.sair.toString())) {
+					acoes(new Mensagem(Acao.sair, entrada.replace(
+							Acao.sair.toString(), "").trim()));
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	private void acoes(Mensagem mensagem) throws IOException {
+		if (!mensagem.getTexto().equals("") || !mensagem.getAcao().equals(Acao.sair.toString())) {
+			enviarMensagem(mensagem);
 		}
 	}
 

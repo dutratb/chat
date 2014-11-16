@@ -7,12 +7,14 @@ import java.net.Socket;
 import java.util.Map;
 
 import bean.Chat;
+import bean.Usuario;
 import util.Mensagem;
 
 public class RecebeCliente implements Runnable {
 	private ObjectInputStream input;
 	private DataOutputStream output;
 	private Chat chat;
+	private Usuario usuario;
 
 	public RecebeCliente(Socket socket, Map<String, DataOutputStream> clientes) {
 		try {
@@ -32,7 +34,16 @@ public class RecebeCliente implements Runnable {
 				mensagem = (Mensagem) input.readObject();
 				switch (mensagem.getAcao()) {
 				case entrar:
-					this.chat.entrar(mensagem, output);
+					this.usuario = this.chat.entrar(mensagem, output);
+					break;
+				case sair:
+					if (usuario != null) {
+						this.chat.sair(usuario);
+						usuario = null;
+						break;
+					} 
+					else
+						this.chat.enviar("Chat:> É necessário entrar no chat.", this.output);
 					break;
 				default:
 					break;

@@ -14,26 +14,33 @@ public class Chat {
 	}
 
 	public Map<String, DataOutputStream> getClientes() {
-		return clientes;
+		return this.clientes;
 	}
 
-	public void entrar(Mensagem mensagem, DataOutputStream output) throws IOException {
+	public Usuario entrar(Mensagem mensagem, DataOutputStream output) throws IOException {
 		Usuario usuario = new Usuario(mensagem.getTexto());
-		if (clientes.containsKey(usuario.getNome()))
-			enviar(output, "Chat:> " + usuario.getNome() + " já está no grupo!");
-		else {
-		clientes.put(usuario.getNome(), new DataOutputStream(output));
-		enviarTodos("Chat:>" + usuario.getNome() + " entrou no grupo!");
+		if (this.clientes.containsKey(usuario.getNome())) {
+			enviar("Chat:> " + usuario.getNome() + " já está no grupo!", output);
+			return null;
 		}
+		this.clientes.put(usuario.getNome(), new DataOutputStream(output));
+		enviarTodos("Chat:> " + usuario.getNome() + " entrou no grupo!");
+		return usuario;
 	}
 
 	private void enviarTodos(String texto) throws IOException {
-		for (Map.Entry<String, DataOutputStream> map : clientes.entrySet()) {
+		for (Map.Entry<String, DataOutputStream> map : this.clientes.entrySet()) {
 			map.getValue().writeUTF(texto);
 		}
 	}
 
-	private void enviar(DataOutputStream output, String texto) throws IOException {
+	public void enviar(String texto, DataOutputStream output) throws IOException {
 		output.writeUTF(texto);
 	}
+
+	public void sair(Usuario usuario) throws IOException {
+		enviarTodos("Chat:>" + usuario.getNome() + " saiu!");
+		this.clientes.remove(usuario.getNome());
+	}
+	
 }
