@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import thread.RecebeCliente;
+
 public class Servidor {
 	private static final int PORT = 12345;
 	
@@ -14,9 +16,10 @@ public class Servidor {
 			System.out.println("Servidor rodando na porta "
 					+ PORT);
 			while (true) {
-				Socket cliente = servidor.accept();
+				Socket socketCliente = servidor.accept();
 				System.out.println("Nova conexão com o cliente "
-						+ cliente.getInetAddress().getHostAddress());
+						+ socketCliente.getInetAddress().getHostAddress());
+				new Thread(new RecebeCliente(socketCliente)).start();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
