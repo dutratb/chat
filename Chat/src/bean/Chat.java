@@ -42,5 +42,14 @@ public class Chat {
 		enviarTodos("Chat:>" + usuario.getNome() + " saiu!");
 		this.clientes.remove(usuario.getNome());
 	}
+
+	public void listar(DataOutputStream output) throws IOException {
+		String lista = "Chat:> ";
+		for (Map.Entry<String, DataOutputStream> map : clientes.entrySet()) {
+			lista = lista + " [" + map.getKey() + "] ";
+		}
+		enviar(lista, output);
+		
+	}
 	
 }

@@ -49,7 +49,9 @@ public class Cliente {
 					}
 					entrar(new Mensagem(Acao.entrar, entrada.replace(
 							Acao.entrar.toString(), "").trim()));
-				} else if (entrada.equals(Acao.sair.toString())) {
+				} else if (entrada.equals(Acao.listar.toString().trim()))
+					listar();
+				else if (entrada.equals(Acao.sair.toString())) {
 					acoes(new Mensagem(Acao.sair, entrada.replace(
 							Acao.sair.toString(), "").trim()));
 				}
@@ -60,8 +62,13 @@ public class Cliente {
 		this.serverSocket.close();
 	}
 
+	private void listar() throws IOException {
+		enviarMensagem(new Mensagem(Acao.listar));
+	}
+
 	private void acoes(Mensagem mensagem) throws IOException {
-		if (!mensagem.getTexto().equals("") || !mensagem.getAcao().equals(Acao.sair.toString())) {
+		if (!mensagem.getTexto().equals("")
+				|| !mensagem.getAcao().equals(Acao.sair.toString())) {
 			enviarMensagem(mensagem);
 		}
 	}
